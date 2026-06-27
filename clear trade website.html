@@ -1,0 +1,1981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClearTrade — AI Trade Copilot for Pakistan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #0F6E56;
+    --green-light: #1D9E75;
+    --green-pale: #E1F5EE;
+    --green-dark: #085041;
+    --gold: #BA7517;
+    --gold-light: #EF9F27;
+    --gold-pale: #FAEEDA;
+    --ink: #1a1a1a;
+    --ink-muted: #4a4a4a;
+    --ink-faint: #888;
+    --surface: #f9f8f5;
+    --white: #ffffff;
+    --border: #e8e4dd;
+    --border-strong: #ccc8c0;
+    --red: #A32D2D;
+    --red-pale: #FCEBEB;
+    --blue: #185FA5;
+    --blue-pale: #E6F1FB;
+    --radius: 12px;
+    --radius-lg: 20px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--surface);
+    color: var(--ink);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  h1,h2,h3,h4 { font-family: 'Syne', sans-serif; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(249,248,245,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem; font-weight: 800;
+    color: var(--green);
+    text-decoration: none;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .nav-logo span {
+    background: var(--green);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .nav-links { display: flex; align-items: center; gap: 2rem; }
+  .nav-links a {
+    text-decoration: none; color: var(--ink-muted);
+    font-size: 0.9rem; font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--green); }
+
+  .nav-cta {
+    background: var(--green); color: white;
+    padding: 0.5rem 1.25rem; border-radius: 8px;
+    text-decoration: none; font-size: 0.9rem; font-weight: 600;
+    transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--green-dark); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 100px 2rem 4rem;
+    max-width: 1200px; margin: 0 auto;
+    gap: 4rem;
+  }
+
+  .hero-text { flex: 1; }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--green-pale);
+    color: var(--green-dark);
+    padding: 6px 14px; border-radius: 100px;
+    font-size: 0.82rem; font-weight: 600;
+    margin-bottom: 1.5rem;
+    border: 1px solid #9FE1CB;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green-light);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
+  }
+
+  .hero h1 {
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1.25rem;
+    color: var(--ink);
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--green);
+  }
+
+  .hero p {
+    font-size: 1.1rem; color: var(--ink-muted);
+    max-width: 500px; margin-bottom: 2rem;
+    line-height: 1.7;
+  }
+
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+  .btn-primary {
+    background: var(--green); color: white;
+    padding: 0.85rem 2rem; border-radius: 10px;
+    font-size: 1rem; font-weight: 600;
+    border: none; cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none; display: inline-block;
+  }
+  .btn-primary:hover { background: var(--green-dark); transform: translateY(-1px); }
+
+  .btn-secondary {
+    background: white; color: var(--ink);
+    padding: 0.85rem 2rem; border-radius: 10px;
+    font-size: 1rem; font-weight: 600;
+    border: 1px solid var(--border-strong); cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none; display: inline-block;
+  }
+  .btn-secondary:hover { border-color: var(--green); color: var(--green); }
+
+  .hero-stats {
+    display: flex; gap: 2rem; margin-top: 2.5rem;
+    flex-wrap: wrap;
+  }
+
+  .hero-stat strong {
+    display: block;
+    font-family: 'Syne', sans-serif;
+    font-size: 1.6rem; font-weight: 800;
+    color: var(--green);
+  }
+
+  .hero-stat span { font-size: 0.82rem; color: var(--ink-faint); }
+
+  /* HERO VISUAL */
+  .hero-visual { flex: 1; max-width: 480px; }
+
+  .demo-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+  }
+
+  .demo-card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 1.25rem;
+  }
+
+  .demo-card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem; font-weight: 700;
+    color: var(--ink);
+  }
+
+  .demo-status {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 0.75rem; color: var(--green-light); font-weight: 600;
+  }
+
+  .demo-status::before {
+    content: ''; width: 7px; height: 7px;
+    border-radius: 50%; background: var(--green-light);
+  }
+
+  .demo-input-row {
+    display: flex; gap: 8px; margin-bottom: 1rem;
+  }
+
+  .demo-input {
+    flex: 1; padding: 0.65rem 0.9rem;
+    border: 1px solid var(--border); border-radius: 8px;
+    font-size: 0.85rem; font-family: 'DM Sans', sans-serif;
+    background: var(--surface);
+    color: var(--ink);
+  }
+
+  .demo-run-btn {
+    background: var(--green); color: white;
+    border: none; border-radius: 8px;
+    padding: 0 1rem; cursor: pointer;
+    font-size: 0.85rem; font-weight: 600;
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+  .demo-run-btn:hover { background: var(--green-dark); }
+
+  .demo-result { margin-top: 0.5rem; }
+
+  .demo-result-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .demo-result-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.65rem 0.9rem;
+  }
+
+  .demo-result-label {
+    font-size: 0.7rem; color: var(--ink-faint);
+    font-weight: 500; margin-bottom: 2px;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+
+  .demo-result-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem; font-weight: 700;
+    color: var(--ink);
+  }
+
+  .demo-result-value.green { color: var(--green); }
+  .demo-result-value.gold { color: var(--gold); }
+  .demo-result-value.red { color: var(--red); }
+
+  .demo-go-nogo {
+    margin-top: 0.75rem;
+    background: var(--green-pale);
+    border: 1px solid #9FE1CB;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .go-badge {
+    background: var(--green);
+    color: white;
+    font-size: 0.72rem; font-weight: 700;
+    padding: 4px 10px; border-radius: 100px;
+    white-space: nowrap;
+  }
+
+  .go-text { font-size: 0.82rem; color: var(--green-dark); }
+
+  /* SECTION LAYOUT */
+  section { padding: 5rem 2rem; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.78rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--green); margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 800; line-height: 1.15;
+    margin-bottom: 1rem; color: var(--ink);
+  }
+  .section-sub {
+    font-size: 1.05rem; color: var(--ink-muted);
+    max-width: 560px; line-height: 1.7;
+  }
+
+  /* HOW IT WORKS */
+  #how-it-works { background: white; }
+
+  .steps-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2rem; margin-top: 3rem;
+  }
+
+  .step-card {
+    position: relative;
+    padding: 1.75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .step-card:hover { border-color: var(--green); transform: translateY(-3px); }
+
+  .step-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.5rem; font-weight: 800;
+    color: var(--green-pale);
+    line-height: 1; margin-bottom: 1rem;
+  }
+
+  .step-icon {
+    font-size: 1.8rem; margin-bottom: 0.75rem;
+  }
+
+  .step-card h3 {
+    font-size: 1.05rem; font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .step-card p { font-size: 0.9rem; color: var(--ink-muted); }
+
+  /* AI COPILOT SECTION */
+  #copilot { background: var(--surface); }
+
+  .copilot-layout {
+    display: grid; grid-template-columns: 1fr 1.2fr;
+    gap: 4rem; align-items: start; margin-top: 3rem;
+  }
+
+  .chat-window {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+  }
+
+  .chat-header {
+    background: var(--green);
+    padding: 1rem 1.25rem;
+    color: white;
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .chat-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.9rem;
+  }
+
+  .chat-header-info h4 { font-size: 0.95rem; font-weight: 700; }
+  .chat-header-info p { font-size: 0.75rem; opacity: 0.8; }
+
+  .chat-messages { padding: 1.25rem; min-height: 320px; max-height: 400px; overflow-y: auto; }
+
+  .msg {
+    margin-bottom: 1rem;
+    display: flex; gap: 8px;
+  }
+
+  .msg-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--green-pale);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem; font-weight: 700; color: var(--green-dark);
+    flex-shrink: 0; margin-top: 2px;
+  }
+
+  .msg-bubble {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0 12px 12px 12px;
+    padding: 0.65rem 0.9rem;
+    font-size: 0.88rem;
+    max-width: 85%;
+  }
+
+  .msg.user { flex-direction: row-reverse; }
+  .msg.user .msg-avatar { background: var(--green); color: white; }
+  .msg.user .msg-bubble {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+    border-radius: 12px 0 12px 12px;
+  }
+
+  .msg-choice-row {
+    display: flex; gap: 8px; margin-top: 0.6rem; flex-wrap: wrap;
+  }
+
+  .msg-choice-btn {
+    background: white; border: 1.5px solid var(--green);
+    color: var(--green); border-radius: 8px;
+    padding: 6px 14px; font-size: 0.82rem; font-weight: 600;
+    cursor: pointer; transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .msg-choice-btn:hover { background: var(--green); color: white; }
+  .msg-choice-btn.selected { background: var(--green); color: white; }
+
+  .chat-input-row {
+    display: flex; gap: 8px; padding: 1rem 1.25rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .chat-input {
+    flex: 1; padding: 0.6rem 0.9rem;
+    border: 1px solid var(--border); border-radius: 8px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
+    background: var(--surface);
+    color: var(--ink);
+  }
+
+  .chat-send {
+    background: var(--green); color: white; border: none;
+    border-radius: 8px; padding: 0 1rem; cursor: pointer;
+    font-size: 0.88rem; font-weight: 600;
+    transition: background 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .chat-send:hover { background: var(--green-dark); }
+
+  /* RESULTS PANEL */
+  .results-panel { display: flex; flex-direction: column; gap: 1rem; }
+
+  .result-block {
+    background: white; border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.25rem;
+    display: none;
+    animation: fadeUp 0.4s ease;
+  }
+  .result-block.visible { display: block; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .result-block-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.82rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--ink-faint); margin-bottom: 0.75rem;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  .result-block-title::before {
+    content: ''; width: 6px; height: 6px;
+    border-radius: 50%; background: var(--green-light);
+  }
+
+  .tax-row {
+    display: flex; justify-content: space-between;
+    padding: 0.45rem 0;
+    border-bottom: 1px dashed var(--border);
+    font-size: 0.88rem;
+  }
+  .tax-row:last-child { border-bottom: none; }
+  .tax-row.total {
+    font-weight: 700; font-size: 0.95rem;
+    border-top: 2px solid var(--border); border-bottom: none;
+    padding-top: 0.75rem; margin-top: 0.25rem;
+    color: var(--green);
+  }
+
+  .cert-tag {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--gold-pale); color: var(--gold);
+    border: 1px solid #FAC775;
+    border-radius: 100px; padding: 4px 12px;
+    font-size: 0.78rem; font-weight: 600;
+    margin: 3px;
+  }
+
+  .hs-code-display {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem; font-weight: 800;
+    color: var(--green); letter-spacing: 0.05em;
+  }
+
+  .hs-desc { font-size: 0.85rem; color: var(--ink-muted); margin-top: 4px; }
+
+  .profit-bar-wrap { margin-top: 0.75rem; }
+  .profit-bar-label { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 4px; }
+  .profit-bar { height: 10px; background: var(--border); border-radius: 100px; overflow: hidden; }
+  .profit-bar-fill { height: 100%; border-radius: 100px; background: var(--green-light); transition: width 1s ease; }
+
+  .verdict-box {
+    margin-top: 0.75rem;
+    padding: 0.85rem 1rem;
+    border-radius: 10px;
+    display: flex; align-items: center; gap: 10px;
+    font-size: 0.88rem; font-weight: 600;
+  }
+  .verdict-box.go { background: var(--green-pale); color: var(--green-dark); border: 1px solid #9FE1CB; }
+  .verdict-box.nogo { background: var(--red-pale); color: var(--red); border: 1px solid #F7C1C1; }
+
+  .verdict-badge {
+    padding: 4px 12px; border-radius: 100px; font-size: 0.72rem;
+    font-weight: 700; white-space: nowrap;
+  }
+  .go .verdict-badge { background: var(--green); color: white; }
+  .nogo .verdict-badge { background: var(--red); color: white; }
+
+  /* DOCUMENTS SECTION */
+  #documents { background: white; }
+
+  .docs-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem; margin-top: 3rem;
+  }
+
+  .doc-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    text-align: center;
+    background: var(--surface);
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .doc-card:hover { border-color: var(--green); background: white; transform: translateY(-2px); }
+
+  .doc-icon {
+    font-size: 2.2rem; margin-bottom: 0.75rem;
+  }
+
+  .doc-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.35rem; }
+  .doc-card p { font-size: 0.8rem; color: var(--ink-muted); }
+
+  .doc-card .doc-btn {
+    margin-top: 1rem;
+    display: inline-block;
+    background: var(--green);
+    color: white;
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .doc-card .doc-btn:hover { background: var(--green-dark); }
+
+  /* DOCUMENT MODAL */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,0.5); align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: white; border-radius: var(--radius-lg);
+    padding: 2rem; max-width: 560px; width: 90%;
+    max-height: 85vh; overflow-y: auto;
+    animation: fadeUp 0.25s ease;
+  }
+
+  .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+  .modal-title { font-size: 1.25rem; font-weight: 800; }
+  .modal-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--ink-muted); }
+
+  .form-group { margin-bottom: 1rem; }
+  .form-label { display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 5px; color: var(--ink-muted); }
+  .form-input, .form-select {
+    width: 100%; padding: 0.65rem 0.9rem;
+    border: 1px solid var(--border); border-radius: 8px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+    color: var(--ink); background: var(--surface);
+    transition: border-color 0.2s;
+  }
+  .form-input:focus, .form-select:focus { outline: none; border-color: var(--green); }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  .doc-preview {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.25rem;
+    margin-top: 1.25rem;
+    font-size: 0.85rem; line-height: 1.8;
+    display: none;
+  }
+  .doc-preview.show { display: block; }
+
+  .doc-preview-header {
+    text-align: center; font-weight: 700; font-size: 1rem;
+    margin-bottom: 1rem; color: var(--green);
+    font-family: 'Syne', sans-serif;
+    border-bottom: 2px solid var(--green); padding-bottom: 0.5rem;
+  }
+
+  .doc-field { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px dashed var(--border); }
+  .doc-field-label { color: var(--ink-faint); font-size: 0.8rem; }
+  .doc-field-value { font-weight: 600; font-size: 0.82rem; }
+
+  /* PRICING */
+  #pricing { background: var(--surface); }
+
+  .pricing-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem; margin-top: 3rem;
+  }
+
+  .price-card {
+    background: white; border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 2rem;
+    position: relative; transition: all 0.2s;
+  }
+  .price-card:hover { transform: translateY(-3px); }
+  .price-card.featured { border-color: var(--green); border-width: 2px; }
+
+  .price-badge {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: var(--green); color: white;
+    padding: 4px 16px; border-radius: 100px;
+    font-size: 0.75rem; font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .price-name { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .price-amount {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.2rem; font-weight: 800;
+    color: var(--green); margin-bottom: 0.25rem;
+  }
+  .price-amount span { font-size: 1rem; color: var(--ink-muted); font-weight: 400; }
+  .price-desc { font-size: 0.85rem; color: var(--ink-muted); margin-bottom: 1.25rem; }
+
+  .price-features { list-style: none; margin-bottom: 1.5rem; }
+  .price-features li {
+    padding: 5px 0; font-size: 0.88rem;
+    display: flex; gap: 8px; align-items: flex-start;
+  }
+  .price-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+
+  /* TRADE ROUTE FINDER */
+  #route-finder { background: white; }
+
+  .route-layout {
+    display: grid; grid-template-columns: 1fr 1.2fr;
+    gap: 4rem; align-items: start; margin-top: 3rem;
+  }
+
+  .country-compare {
+    display: flex; flex-direction: column; gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .country-row {
+    display: flex; align-items: center; gap: 1rem;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 0.85rem 1rem;
+    transition: all 0.2s;
+  }
+  .country-row.best { border-color: var(--green); background: var(--green-pale); }
+  .country-row.best .country-name { color: var(--green-dark); }
+
+  .flag { font-size: 1.4rem; }
+  .country-name { font-weight: 600; font-size: 0.9rem; flex: 1; }
+  .country-cost { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.95rem; }
+  .country-cost.low { color: var(--green); }
+  .country-cost.high { color: var(--red); }
+  .country-cost.mid { color: var(--gold); }
+
+  .best-label {
+    font-size: 0.7rem; font-weight: 700;
+    background: var(--green); color: white;
+    padding: 3px 8px; border-radius: 100px;
+  }
+
+  .cost-bar-wrap { flex: 1; }
+  .cost-bar { height: 6px; background: var(--border); border-radius: 100px; overflow: hidden; }
+  .cost-bar-fill { height: 100%; border-radius: 100px; }
+  .cost-bar-fill.low { background: var(--green-light); }
+  .cost-bar-fill.mid { background: var(--gold-light); }
+  .cost-bar-fill.high { background: #E24B4A; }
+
+  /* PROFIT CHECKER */
+  #profit-checker { background: var(--surface); }
+
+  .profit-layout {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 3rem; align-items: start; margin-top: 3rem;
+  }
+
+  .calc-card {
+    background: white; border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 1.75rem;
+  }
+
+  .calc-title { font-size: 1rem; font-weight: 700; margin-bottom: 1.25rem; }
+
+  .calc-row { margin-bottom: 0.9rem; }
+  .calc-label { font-size: 0.8rem; color: var(--ink-muted); font-weight: 500; margin-bottom: 4px; }
+
+  .calc-input {
+    width: 100%; padding: 0.6rem 0.9rem;
+    border: 1px solid var(--border); border-radius: 8px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+    color: var(--ink); background: var(--surface);
+  }
+  .calc-input:focus { outline: none; border-color: var(--green); }
+
+  .calc-result-card {
+    background: white; border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 1.75rem;
+  }
+
+  .metric-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.6rem 0; border-bottom: 1px dashed var(--border);
+    font-size: 0.88rem;
+  }
+  .metric-row:last-child { border-bottom: none; }
+  .metric-value { font-weight: 700; }
+  .metric-value.positive { color: var(--green); }
+  .metric-value.negative { color: var(--red); }
+
+  .profit-donut { text-align: center; margin: 1rem 0; }
+
+  /* WEBOC GUIDE */
+  #weboc { background: white; }
+
+  .weboc-steps {
+    margin-top: 2.5rem;
+    position: relative;
+  }
+
+  .weboc-step {
+    display: flex; gap: 1.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+
+  .weboc-step::before {
+    content: '';
+    position: absolute;
+    left: 19px; top: 40px;
+    width: 2px; height: calc(100% + 1rem);
+    background: var(--border);
+  }
+  .weboc-step:last-child::before { display: none; }
+
+  .weboc-step-num {
+    width: 40px; height: 40px; flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--green); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: 0.9rem; z-index: 1;
+  }
+
+  .weboc-step-content h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.35rem; }
+  .weboc-step-content p { font-size: 0.88rem; color: var(--ink-muted); }
+
+  /* FTA SECTION */
+  #fta { background: var(--surface); }
+
+  .fta-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem; margin-top: 2rem;
+  }
+
+  .fta-card {
+    background: white; border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.25rem;
+    text-align: center;
+  }
+  .fta-flag { font-size: 2rem; margin-bottom: 0.5rem; }
+  .fta-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 0.25rem; }
+  .fta-saving { font-size: 0.8rem; color: var(--green); font-weight: 600; }
+
+  /* CTA SECTION */
+  #cta {
+    background: var(--green);
+    text-align: center;
+    color: white;
+  }
+
+  #cta .section-label { color: rgba(255,255,255,0.7); }
+  #cta .section-title { color: white; }
+  #cta .section-sub { color: rgba(255,255,255,0.85); max-width: 540px; margin: 0 auto 2rem; }
+
+  .cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+  .btn-white {
+    background: white; color: var(--green);
+    padding: 0.85rem 2rem; border-radius: 10px;
+    font-size: 1rem; font-weight: 700;
+    border: none; cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .btn-white:hover { transform: translateY(-2px); opacity: 0.95; }
+
+  .btn-outline-white {
+    background: transparent; color: white;
+    padding: 0.85rem 2rem; border-radius: 10px;
+    font-size: 1rem; font-weight: 600;
+    border: 2px solid rgba(255,255,255,0.5); cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .btn-outline-white:hover { border-color: white; background: rgba(255,255,255,0.1); }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink); color: white;
+    padding: 3rem 2rem;
+  }
+
+  .footer-layout {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+  }
+
+  .footer-brand .nav-logo { color: #9FE1CB; }
+  .footer-brand p { font-size: 0.88rem; color: rgba(255,255,255,0.5); margin-top: 0.75rem; }
+
+  .footer-col h4 { font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.4); margin-bottom: 1rem; }
+  .footer-col a { display: block; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.88rem; margin-bottom: 0.5rem; transition: color 0.2s; }
+  .footer-col a:hover { color: #9FE1CB; }
+
+  .footer-bottom {
+    max-width: 1200px; margin: 2rem auto 0;
+    padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.82rem; color: rgba(255,255,255,0.4);
+    flex-wrap: wrap; gap: 0.5rem;
+  }
+
+  /* TYPING INDICATOR */
+  .typing-indicator {
+    display: flex; gap: 4px; padding: 8px 12px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 0 12px 12px 12px; width: fit-content;
+  }
+  .typing-dot {
+    width: 7px; height: 7px; border-radius: 50%; background: var(--ink-faint);
+    animation: typingBounce 1.2s infinite;
+  }
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes typingBounce {
+    0%,60%,100% { transform: translateY(0); }
+    30% { transform: translateY(-6px); }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .hero { flex-direction: column; padding: 90px 1.25rem 3rem; }
+    .hero-visual { width: 100%; max-width: 100%; }
+    .copilot-layout, .route-layout, .profit-layout { grid-template-columns: 1fr; }
+    .footer-layout { grid-template-columns: 1fr 1fr; }
+    .nav-links { display: none; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+
+  /* NOTIFICATION */
+  .toast {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 300;
+    background: var(--ink); color: white;
+    padding: 0.85rem 1.25rem; border-radius: 10px;
+    font-size: 0.88rem; font-weight: 500;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    transform: translateY(100px); opacity: 0;
+    transition: all 0.3s;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast-icon { font-size: 1rem; }
+
+  /* SCROLL REVEAL */
+  .reveal { opacity: 0; transform: translateY(20px); transition: all 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* FEATURES GRID */
+  .features-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem; margin-top: 2.5rem;
+  }
+
+  .feature-chip {
+    display: flex; align-items: center; gap: 8px;
+    background: white; border: 1px solid var(--border);
+    border-radius: 10px; padding: 0.75rem 1rem;
+    font-size: 0.88rem; font-weight: 500;
+    transition: all 0.2s;
+  }
+  .feature-chip:hover { border-color: var(--green); color: var(--green); }
+  .feature-chip .chip-check { color: var(--green); font-weight: 700; font-size: 1rem; }
+
+  /* TABS */
+  .tab-nav {
+    display: flex; gap: 0.5rem; margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--border); padding-bottom: 0;
+  }
+
+  .tab-btn {
+    padding: 0.6rem 1.25rem; border: none; background: none;
+    font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600;
+    color: var(--ink-muted); cursor: pointer;
+    border-bottom: 2px solid transparent; margin-bottom: -2px;
+    transition: all 0.2s;
+  }
+  .tab-btn.active { color: var(--green); border-bottom-color: var(--green); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* RANGE INPUT */
+  input[type=range] {
+    -webkit-appearance: none; width: 100%; height: 5px;
+    background: var(--border); border-radius: 100px; cursor: pointer;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 18px; height: 18px;
+    border-radius: 50%; background: var(--green); cursor: pointer;
+    border: 3px solid white; box-shadow: 0 0 0 1px var(--green);
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">ClearTrade <span>BETA</span></a>
+  <div class="nav-links">
+    <a href="#how-it-works">How It Works</a>
+    <a href="#copilot">AI Copilot</a>
+    <a href="#documents">Documents</a>
+    <a href="#profit-checker">Profit Checker</a>
+    <a href="#pricing">Pricing</a>
+  </div>
+  <a href="#copilot" class="nav-cta">Try Free →</a>
+</nav>
+
+<!-- HERO -->
+<section style="padding: 0;">
+  <div class="hero">
+    <div class="hero-text reveal">
+      <div class="hero-badge">🇵🇰 Built for Pakistan's Traders</div>
+      <h1>Your AI <em>Trade Copilot</em> for Imports & Exports</h1>
+      <p>Stop paying PKR 15,000–50,000 to clearing agents just to understand customs. Enter your product and get instant HS codes, duties, taxes, documents and a step-by-step guide — in 60 seconds.</p>
+      <div class="hero-actions">
+        <a href="#copilot" class="btn-primary">Start Free Analysis →</a>
+        <a href="#how-it-works" class="btn-secondary">See How It Works</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <strong>500K+</strong>
+          <span>SMEs in Pakistan</span>
+        </div>
+        <div class="hero-stat">
+          <strong>60 sec</strong>
+          <span>Full trade analysis</span>
+        </div>
+        <div class="hero-stat">
+          <strong>PKR 50K</strong>
+          <span>Saved per shipment</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual reveal">
+      <div class="demo-card">
+        <div class="demo-card-header">
+          <span class="demo-card-title">Live Trade Analysis</span>
+          <span class="demo-status">AI Ready</span>
+        </div>
+        <div class="demo-input-row">
+          <input class="demo-input" id="heroProduct" type="text" value="500 LED Bulbs from China" placeholder="e.g. 500 LED bulbs from China">
+          <button class="demo-run-btn" onclick="runHeroDemo()">Analyze →</button>
+        </div>
+        <div class="demo-result" id="heroResult" style="display:none">
+          <div class="demo-result-grid">
+            <div class="demo-result-item">
+              <div class="demo-result-label">HS Code</div>
+              <div class="demo-result-value green">8539.50.00</div>
+            </div>
+            <div class="demo-result-item">
+              <div class="demo-result-label">Customs Duty</div>
+              <div class="demo-result-value">20%</div>
+            </div>
+            <div class="demo-result-item">
+              <div class="demo-result-label">Total Landed Cost</div>
+              <div class="demo-result-value gold">PKR 1,47,500</div>
+            </div>
+            <div class="demo-result-item">
+              <div class="demo-result-label">Est. Profit</div>
+              <div class="demo-result-value green">+PKR 52,000</div>
+            </div>
+          </div>
+          <div class="demo-go-nogo">
+            <span class="go-badge">✅ GO</span>
+            <span class="go-text">Viable trade — 35% margin at current market prices</span>
+          </div>
+        </div>
+        <div id="heroLoading" style="display:none; text-align:center; padding: 1rem;">
+          <div class="typing-indicator" style="margin: 0 auto;">
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+          </div>
+          <p style="font-size:0.8rem; color:var(--ink-faint); margin-top:8px;">Analyzing trade data…</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES STRIP -->
+<section style="background: var(--green); padding: 2rem;">
+  <div class="container">
+    <div class="features-grid" style="margin-top:0;">
+      <div class="feature-chip" style="background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.2); color:white;">
+        <span class="chip-check" style="color:#9FE1CB;">✓</span> HS Code Lookup
+      </div>
+      <div class="feature-chip" style="background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.2); color:white;">
+        <span class="chip-check" style="color:#9FE1CB;">✓</span> Customs Duty Calculator
+      </div>
+      <div class="feature-chip" style="background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.2); color:white;">
+        <span class="chip-check" style="color:#9FE1CB;">✓</span> FTA/SRO Exemptions
+      </div>
+      <div class="feature-chip" style="background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.2); color:white;">
+        <span class="chip-check" style="color:#9FE1CB;">✓</span> Auto Documents
+      </div>
+      <div class="feature-chip" style="background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.2); color:white;">
+        <span class="chip-check" style="color:#9FE1CB;">✓</span> Profit Estimator
+      </div>
+      <div class="feature-chip" style="background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.2); color:white;">
+        <span class="chip-check" style="color:#9FE1CB;">✓</span> WEBOC Guidance
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Process</div>
+      <h2 class="section-title">From Confusion to Clarity in 60 Seconds</h2>
+      <p class="section-sub">Three simple inputs. One complete trade analysis. No customs agent needed.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card reveal">
+        <div class="step-num">01</div>
+        <div class="step-icon">📦</div>
+        <h3>Enter Product + Country + Quantity</h3>
+        <p>Type naturally — "Import 500 LED lights from China" or "Export 200 kg of rice to UAE"</p>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-num">02</div>
+        <div class="step-icon">🤖</div>
+        <h3>AI Asks What You Need</h3>
+        <p>Option A: Full guidance + costs. Option B: Ready-to-submit documents. Or both.</p>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-num">03</div>
+        <div class="step-icon">📊</div>
+        <h3>Get Full Trade Report</h3>
+        <p>HS Code, all taxes, FTA exemptions, certificates required, total landed cost, profit estimate.</p>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-num">04</div>
+        <div class="step-icon">📄</div>
+        <h3>Download Your Documents</h3>
+        <p>Invoice, Packing List, Form-E, and customs documents — auto-filled and ready to submit.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI COPILOT -->
+<section id="copilot">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">AI Copilot</div>
+      <h2 class="section-title">Ask ClearTrade Anything About Your Trade</h2>
+      <p class="section-sub">Our AI Trade Copilot analyzes your product and gives you a complete picture before you spend a single rupee.</p>
+    </div>
+    <div class="copilot-layout">
+      <div class="reveal">
+        <div class="chat-window">
+          <div class="chat-header">
+            <div class="chat-avatar">CT</div>
+            <div class="chat-header-info">
+              <h4>ClearTrade AI</h4>
+              <p>Trade Copilot • Online</p>
+            </div>
+          </div>
+          <div class="chat-messages" id="chatMessages">
+            <div class="msg">
+              <div class="msg-avatar">CT</div>
+              <div class="msg-bubble">
+                Welcome! I'm your AI Trade Copilot 🇵🇰<br><br>
+                Tell me what you want to import or export. For example:<br>
+                <em>"Import 500 LED bulbs from China"</em>
+              </div>
+            </div>
+          </div>
+          <div class="chat-input-row">
+            <input class="chat-input" id="chatInput" type="text" placeholder="e.g. Import 200 power banks from China…" onkeydown="if(event.key==='Enter') sendChatMessage()">
+            <button class="chat-send" onclick="sendChatMessage()">Send</button>
+          </div>
+        </div>
+      </div>
+      <div class="results-panel" id="resultsPanel">
+        <div style="text-align:center; padding: 3rem 1rem; color: var(--ink-faint);">
+          <div style="font-size:3rem; margin-bottom:1rem;">🔍</div>
+          <p style="font-size:0.9rem;">Your trade analysis will appear here once you send a query.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOCUMENTS -->
+<section id="documents">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Auto Documentation</div>
+      <h2 class="section-title">All Your Trade Documents, Auto-Filled</h2>
+      <p class="section-sub">Generate complete, customs-ready documents with one click. No more manual filling, no errors, no delays.</p>
+    </div>
+    <div class="docs-grid">
+      <div class="doc-card reveal" onclick="openDocModal('invoice')">
+        <div class="doc-icon">🧾</div>
+        <h3>Commercial Invoice</h3>
+        <p>Auto-filled with buyer, seller, product details, and customs valuation</p>
+        <button class="doc-btn">Generate →</button>
+      </div>
+      <div class="doc-card reveal" onclick="openDocModal('packing')">
+        <div class="doc-icon">📦</div>
+        <h3>Packing List</h3>
+        <p>Detailed item-level packing list with weights, dimensions, and packaging</p>
+        <button class="doc-btn">Generate →</button>
+      </div>
+      <div class="doc-card reveal" onclick="openDocModal('forme')">
+        <div class="doc-icon">🏦</div>
+        <h3>Form-E (Export)</h3>
+        <p>State Bank of Pakistan Form-E for export proceeds repatriation</p>
+        <button class="doc-btn">Generate →</button>
+      </div>
+      <div class="doc-card reveal" onclick="openDocModal('customs')">
+        <div class="doc-icon">🛃</div>
+        <h3>Customs GD</h3>
+        <p>Goods Declaration for WEBOC filing — pre-filled with correct HS codes</p>
+        <button class="doc-btn">Generate →</button>
+      </div>
+      <div class="doc-card reveal" onclick="openDocModal('coo')">
+        <div class="doc-icon">🌐</div>
+        <h3>Certificate of Origin</h3>
+        <p>Required for FTA benefit claims with China, UAE, and other partners</p>
+        <button class="doc-btn">Generate →</button>
+      </div>
+      <div class="doc-card reveal" onclick="openDocModal('lc')">
+        <div class="doc-icon">💳</div>
+        <h3>LC Draft</h3>
+        <p>Letter of Credit draft template aligned with your trade terms</p>
+        <button class="doc-btn">Generate →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOCUMENT MODAL -->
+<div class="modal-overlay" id="docModal" onclick="if(event.target===this) closeModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modalTitle">Generate Document</span>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="tab-nav" id="docTabNav">
+      <button class="tab-btn active" onclick="switchDocTab('fill', this)">Fill Details</button>
+      <button class="tab-btn" onclick="switchDocTab('preview', this)">Preview</button>
+    </div>
+    <div class="tab-content active" id="docFillTab">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Exporter / Seller Name</label>
+          <input class="form-input" id="docExporter" placeholder="Your company name">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Importer / Buyer Name</label>
+          <input class="form-input" id="docImporter" placeholder="Buyer name">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Product Description</label>
+          <input class="form-input" id="docProduct" placeholder="e.g. LED Bulbs 9W">
+        </div>
+        <div class="form-group">
+          <label class="form-label">HS Code</label>
+          <input class="form-input" id="docHsCode" placeholder="e.g. 8539.50.00">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Quantity</label>
+          <input class="form-input" id="docQty" type="number" placeholder="500">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Unit Price (USD)</label>
+          <input class="form-input" id="docUnitPrice" type="number" placeholder="1.20">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Country of Origin</label>
+          <select class="form-select" id="docOrigin">
+            <option>China</option>
+            <option>UAE</option>
+            <option>Turkey</option>
+            <option>Malaysia</option>
+            <option>Bangladesh</option>
+            <option>India</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Destination Country</label>
+          <select class="form-select" id="docDest">
+            <option>Pakistan</option>
+            <option>UAE</option>
+            <option>Saudi Arabia</option>
+            <option>UK</option>
+            <option>USA</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-primary" style="width:100%; margin-top:0.5rem;" onclick="generateDocPreview()">Generate Document Preview →</button>
+    </div>
+    <div class="tab-content" id="docPreviewTab">
+      <div class="doc-preview" id="docPreviewContent">
+        <div class="doc-preview-header" id="docPreviewTitle">COMMERCIAL INVOICE</div>
+        <div id="docPreviewFields"></div>
+      </div>
+      <div style="display:flex; gap:0.75rem; margin-top:1rem;">
+        <button class="btn-primary" style="flex:1;" onclick="downloadDoc('pdf')">⬇ Download PDF</button>
+        <button class="btn-secondary" style="flex:1;" onclick="downloadDoc('word')">⬇ Download Word</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TRADE ROUTE FINDER -->
+<section id="route-finder">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">AI Trade Route Finder</div>
+      <h2 class="section-title">Find the Cheapest Sourcing Country</h2>
+      <p class="section-sub">AI compares landed costs from multiple countries so you import from the most profitable source.</p>
+    </div>
+    <div class="route-layout">
+      <div class="reveal">
+        <div class="calc-card">
+          <div class="calc-title">Compare Sourcing Countries</div>
+          <div class="calc-row">
+            <div class="calc-label">Product to Import</div>
+            <input class="calc-input" id="routeProduct" placeholder="e.g. Power Banks 10000mAh" value="Power Banks 10000mAh">
+          </div>
+          <div class="calc-row">
+            <div class="calc-label">Target Quantity</div>
+            <input class="calc-input" id="routeQty" type="number" placeholder="500" value="500">
+          </div>
+          <button class="btn-primary" style="width:100%; margin-top:0.5rem;" onclick="runRouteAnalysis()">Compare Routes →</button>
+        </div>
+        <div style="margin-top:1.5rem;">
+          <div style="font-size:0.82rem; color:var(--ink-faint); margin-bottom:0.5rem;">What's included in the comparison:</div>
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <div class="feature-chip"><span class="chip-check">✓</span> Product unit cost per country</div>
+            <div class="feature-chip"><span class="chip-check">✓</span> Shipping & freight costs</div>
+            <div class="feature-chip"><span class="chip-check">✓</span> Applicable FTA duty rates</div>
+            <div class="feature-chip"><span class="chip-check">✓</span> Lead time & reliability score</div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal" id="routeResults">
+        <div style="font-family:'Syne',sans-serif; font-size:0.85rem; font-weight:700; color:var(--ink-faint); margin-bottom:1rem; text-transform:uppercase; letter-spacing:0.08em;">Landed Cost Comparison</div>
+        <div class="country-compare">
+          <div class="country-row best">
+            <div class="flag">🇨🇳</div>
+            <div class="country-name">China</div>
+            <div class="cost-bar-wrap"><div class="cost-bar"><div class="cost-bar-fill low" style="width:45%"></div></div></div>
+            <div class="country-cost low">PKR 185/unit</div>
+            <div class="best-label">BEST</div>
+          </div>
+          <div class="country-row">
+            <div class="flag">🇲🇾</div>
+            <div class="country-name">Malaysia</div>
+            <div class="cost-bar-wrap"><div class="cost-bar"><div class="cost-bar-fill mid" style="width:62%"></div></div></div>
+            <div class="country-cost mid">PKR 243/unit</div>
+          </div>
+          <div class="country-row">
+            <div class="flag">🇹🇷</div>
+            <div class="country-name">Turkey</div>
+            <div class="cost-bar-wrap"><div class="cost-bar"><div class="cost-bar-fill mid" style="width:70%"></div></div></div>
+            <div class="country-cost mid">PKR 278/unit</div>
+          </div>
+          <div class="country-row">
+            <div class="flag">🇦🇪</div>
+            <div class="country-name">UAE</div>
+            <div class="cost-bar-wrap"><div class="cost-bar"><div class="cost-bar-fill high" style="width:80%"></div></div></div>
+            <div class="country-cost high">PKR 312/unit</div>
+          </div>
+          <div class="country-row">
+            <div class="flag">🇧🇩</div>
+            <div class="country-name">Bangladesh</div>
+            <div class="cost-bar-wrap"><div class="cost-bar"><div class="cost-bar-fill high" style="width:88%"></div></div></div>
+            <div class="country-cost high">PKR 340/unit</div>
+          </div>
+        </div>
+        <div class="verdict-box go" style="margin-top:1rem;">
+          <span class="verdict-badge">RECOMMENDATION</span>
+          <span>Source from China — saves PKR 63,500 on 500 units vs next cheapest option.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROFIT CHECKER -->
+<section id="profit-checker">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">AI Profit Checker</div>
+      <h2 class="section-title">Know Your Profit Before You Import</h2>
+      <p class="section-sub">Enter your costs and expected selling price. ClearTrade tells you exactly what you'll make — and whether the trade is worth it.</p>
+    </div>
+    <div class="profit-layout">
+      <div class="calc-card reveal">
+        <div class="calc-title">Import Cost Inputs</div>
+        <div class="calc-row">
+          <div class="calc-label">Product Cost (USD)</div>
+          <input class="calc-input" id="pcProductCost" type="number" value="1.20" oninput="calcProfit()">
+        </div>
+        <div class="calc-row">
+          <div class="calc-label">Quantity</div>
+          <input class="calc-input" id="pcQty" type="number" value="500" oninput="calcProfit()">
+        </div>
+        <div class="calc-row">
+          <div class="calc-label">Shipping Cost (PKR)</div>
+          <input class="calc-input" id="pcShipping" type="number" value="15000" oninput="calcProfit()">
+        </div>
+        <div class="calc-row">
+          <div class="calc-label">Customs Duty Rate (%)</div>
+          <input class="calc-input" id="pcDuty" type="number" value="20" oninput="calcProfit()">
+        </div>
+        <div class="calc-row">
+          <div class="calc-label">Sales Tax (%)</div>
+          <input class="calc-input" id="pcSalesTax" type="number" value="17" oninput="calcProfit()">
+        </div>
+        <div class="calc-row">
+          <div class="calc-label">Expected Selling Price / unit (PKR)</div>
+          <input class="calc-input" id="pcSellPrice" type="number" value="600" oninput="calcProfit()">
+        </div>
+        <div class="calc-row">
+          <div class="calc-label">USD → PKR Rate</div>
+          <input class="calc-input" id="pcFx" type="number" value="278" oninput="calcProfit()">
+        </div>
+      </div>
+      <div class="calc-result-card reveal" id="profitResult">
+        <div class="calc-title">Profit Analysis</div>
+        <div class="metric-row">
+          <span>Product cost (PKR)</span>
+          <span class="metric-value" id="prProductCost">—</span>
+        </div>
+        <div class="metric-row">
+          <span>Shipping</span>
+          <span class="metric-value" id="prShipping">—</span>
+        </div>
+        <div class="metric-row">
+          <span>Customs duty</span>
+          <span class="metric-value" id="prDuty">—</span>
+        </div>
+        <div class="metric-row">
+          <span>Sales tax</span>
+          <span class="metric-value" id="prSalesTax">—</span>
+        </div>
+        <div class="metric-row" style="font-weight:700; font-size:0.95rem;">
+          <span>Total landed cost</span>
+          <span class="metric-value" id="prLandedCost">—</span>
+        </div>
+        <div class="metric-row" style="font-weight:700; font-size:0.95rem;">
+          <span>Total revenue</span>
+          <span class="metric-value positive" id="prRevenue">—</span>
+        </div>
+        <div class="metric-row" style="font-weight:700; font-size:1rem; border-bottom:none; padding-top:0.75rem;">
+          <span>Net Profit</span>
+          <span class="metric-value" id="prNetProfit" style="font-size:1.2rem;">—</span>
+        </div>
+        <div class="profit-bar-wrap">
+          <div class="profit-bar-label">
+            <span style="font-size:0.8rem; color:var(--ink-faint);">Profit Margin</span>
+            <span style="font-size:0.8rem; font-weight:700;" id="prMarginPct">—</span>
+          </div>
+          <div class="profit-bar"><div class="profit-bar-fill" id="prMarginBar" style="width:0%"></div></div>
+        </div>
+        <div class="verdict-box" id="prVerdict" style="margin-top:1rem; display:none;">
+          <span class="verdict-badge" id="prVerdictBadge"></span>
+          <span id="prVerdictText"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WEBOC GUIDE -->
+<section id="weboc">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">WEBOC Guidance</div>
+      <h2 class="section-title">Step-by-Step WEBOC Import Process</h2>
+      <p class="section-sub">ClearTrade takes you through each WEBOC step so you never get lost in Pakistan's customs system.</p>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:4rem; margin-top:2rem;">
+      <div class="weboc-steps reveal">
+        <div class="weboc-step">
+          <div class="weboc-step-num">1</div>
+          <div class="weboc-step-content">
+            <h4>Register on WEBOC</h4>
+            <p>Register your NTN/STRN on weboc.gov.pk. ClearTrade guides you through the registration documents required.</p>
+          </div>
+        </div>
+        <div class="weboc-step">
+          <div class="weboc-step-num">2</div>
+          <div class="weboc-step-content">
+            <h4>File Goods Declaration (GD)</h4>
+            <p>ClearTrade auto-fills your GD with the correct HS code, duty rates, and all required fields.</p>
+          </div>
+        </div>
+        <div class="weboc-step">
+          <div class="weboc-step-num">3</div>
+          <div class="weboc-step-content">
+            <h4>Pay Duties & Taxes</h4>
+            <p>Receive your Payment Slip Number (PSN). Pay via bank. ClearTrade shows exact amounts before you pay.</p>
+          </div>
+        </div>
+        <div class="weboc-step">
+          <div class="weboc-step-num">4</div>
+          <div class="weboc-step-content">
+            <h4>Customs Examination</h4>
+            <p>Your consignment is assigned a channel. ClearTrade tells you what documents to keep ready for each channel.</p>
+          </div>
+        </div>
+        <div class="weboc-step">
+          <div class="weboc-step-num">5</div>
+          <div class="weboc-step-content">
+            <h4>Release & Delivery</h4>
+            <p>Once cleared, collect your Bill of Entry. ClearTrade tracks status and alerts you at each stage.</p>
+          </div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="calc-card" style="background:var(--green-pale); border-color:#9FE1CB;">
+          <div class="calc-title" style="color:var(--green-dark);">📋 Required Documents Checklist</div>
+          <div style="display:flex; flex-direction:column; gap:0.6rem; margin-top:0.5rem;">
+            <label style="display:flex; align-items:center; gap:10px; font-size:0.88rem; cursor:pointer;">
+              <input type="checkbox" checked style="accent-color:var(--green);"> Commercial Invoice
+            </label>
+            <label style="display:flex; align-items:center; gap:10px; font-size:0.88rem; cursor:pointer;">
+              <input type="checkbox" checked style="accent-color:var(--green);"> Packing List
+            </label>
+            <label style="display:flex; align-items:center; gap:10px; font-size:0.88sm; cursor:pointer;">
+              <input type="checkbox" checked style="accent-color:var(--green);"> Bill of Lading / Airway Bill
+            </label>
+            <label style="display:flex; align-items:center; gap:10px; font-size:0.88rem; cursor:pointer;">
+              <input type="checkbox" style="accent-color:var(--green);"> Certificate of Origin
+            </label>
+            <label style="display:flex; align-items:center; gap:10px; font-size:0.88rem; cursor:pointer;">
+              <input type="checkbox" style="accent-color:var(--green);"> Insurance Certificate
+            </label>
+            <label style="display:flex; align-items:center; gap:10px; font-size:0.88rem; cursor:pointer;">
+              <input type="checkbox" style="accent-color:var(--green);"> PSQCA/DRAP Certificate (if required)
+            </label>
+            <label style="display:flex; align-items:center; gap:10px; font-size:0.88rem; cursor:pointer;">
+              <input type="checkbox" style="accent-color:var(--green);"> SRO Notification (if FTA benefit)
+            </label>
+          </div>
+          <div style="margin-top:1.25rem; padding:0.85rem; background:white; border-radius:8px; font-size:0.82rem; color:var(--green-dark);">
+            <strong>💡 ClearTrade Tip:</strong> Missing even one document can delay your shipment by 3-7 days and cost PKR 5,000–15,000 in demurrage.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FTA SECTION -->
+<section id="fta">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">FTA & SRO Exemptions</div>
+      <h2 class="section-title">Pakistan's Free Trade Agreements</h2>
+      <p class="section-sub">ClearTrade automatically checks if your product qualifies for reduced or zero duty under Pakistan's active FTAs.</p>
+    </div>
+    <div class="fta-grid reveal">
+      <div class="fta-card">
+        <div class="fta-flag">🇨🇳</div>
+        <div class="fta-name">China-Pakistan FTA</div>
+        <div class="fta-saving">Up to 100% duty reduction</div>
+        <div style="font-size:0.75rem; color:var(--ink-faint); margin-top:4px;">Phase II active</div>
+      </div>
+      <div class="fta-card">
+        <div class="fta-flag">🇲🇾</div>
+        <div class="fta-name">Malaysia PTA</div>
+        <div class="fta-saving">Up to 50% reduction</div>
+        <div style="font-size:0.75rem; color:var(--ink-faint); margin-top:4px;">Selected products</div>
+      </div>
+      <div class="fta-card">
+        <div class="fta-flag">🇸🇷</div>
+        <div class="fta-name">Sri Lanka FTA</div>
+        <div class="fta-saving">Zero duty on 200+ items</div>
+        <div style="font-size:0.75rem; color:var(--ink-faint); margin-top:4px;">Textiles focus</div>
+      </div>
+      <div class="fta-card">
+        <div class="fta-flag">🇮🇩</div>
+        <div class="fta-name">Indonesia PTA</div>
+        <div class="fta-saving">Concessions on select goods</div>
+        <div style="font-size:0.75rem; color:var(--ink-faint); margin-top:4px;">Under ECTS</div>
+      </div>
+      <div class="fta-card">
+        <div class="fta-flag">🇹🇷</div>
+        <div class="fta-name">Turkey PTA</div>
+        <div class="fta-saving">Reduced duty on textiles</div>
+        <div style="font-size:0.75rem; color:var(--ink-faint); margin-top:4px;">In negotiation</div>
+      </div>
+    </div>
+    <div style="margin-top:1.5rem; padding:1.25rem; background:var(--gold-pale); border:1px solid #FAC775; border-radius:var(--radius); max-width:600px;">
+      <strong style="color:var(--gold);">SRO Exemptions:</strong>
+      <span style="font-size:0.88rem; color:var(--ink-muted); margin-left:6px;">ClearTrade also checks all active SROs (Statutory Regulatory Orders) that may exempt your specific product from duties. Many traders lose thousands by missing applicable SROs.</span>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" style="background:white;">
+  <div class="container">
+    <div class="reveal" style="text-align:center;">
+      <div class="section-label">Pricing</div>
+      <h2 class="section-title">Simple, Transparent Pricing</h2>
+      <p class="section-sub" style="margin: 0 auto 0.5rem;">Save thousands on clearing agents. ClearTrade pays for itself on the very first shipment.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card reveal">
+        <div class="price-name">Duty Report</div>
+        <div class="price-amount">PKR 500 <span>/ report</span></div>
+        <div class="price-desc">One-time trade analysis for a single product</div>
+        <ul class="price-features">
+          <li>HS Code identification</li>
+          <li>Full duty & tax breakdown</li>
+          <li>FTA/SRO check</li>
+          <li>Required certificates list</li>
+          <li>Landed cost estimate</li>
+        </ul>
+        <button class="btn-secondary" style="width:100%;" onclick="showToast('Redirecting to checkout...')">Get Report</button>
+      </div>
+      <div class="price-card featured reveal">
+        <div class="price-badge">Most Popular</div>
+        <div class="price-name">Document Pack</div>
+        <div class="price-amount">PKR 1,500 <span>/ pack</span></div>
+        <div class="price-desc">Complete document set for one shipment</div>
+        <ul class="price-features">
+          <li>Everything in Duty Report</li>
+          <li>Commercial Invoice (auto-filled)</li>
+          <li>Packing List</li>
+          <li>Form-E (if export)</li>
+          <li>Customs GD draft</li>
+          <li>PDF + Word formats</li>
+          <li>Step-by-step WEBOC guide</li>
+        </ul>
+        <button class="btn-primary" style="width:100%;" onclick="showToast('Redirecting to checkout...')">Get Document Pack</button>
+      </div>
+      <div class="price-card reveal">
+        <div class="price-name">Pro Subscription</div>
+        <div class="price-amount">PKR 2,999 <span>/ month</span></div>
+        <div class="price-desc">For active traders doing multiple shipments</div>
+        <ul class="price-features">
+          <li>Unlimited duty reports</li>
+          <li>Unlimited document packs</li>
+          <li>AI Profit Checker</li>
+          <li>Trade Route Finder</li>
+          <li>Priority support</li>
+          <li>Trade history & tracking</li>
+          <li>Freight forwarder network</li>
+        </ul>
+        <button class="btn-secondary" style="width:100%;" onclick="showToast('Redirecting to checkout...')">Start Pro</button>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top:1.5rem; font-size:0.85rem; color:var(--ink-faint);">
+      💳 Secure payments via EasyPaisa, JazzCash, or Bank Transfer &nbsp;·&nbsp; 🔒 Your data is never shared
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="container" style="text-align:center;">
+    <div class="reveal">
+      <div class="section-label">Get Started Today</div>
+      <h2 class="section-title" style="max-width:700px; margin:0 auto 1rem;">Stop Paying Clearing Agents for Information You Can Get in 60 Seconds</h2>
+      <p class="section-sub">Join thousands of Pakistani traders who use ClearTrade to import and export smarter.</p>
+      <div class="cta-actions">
+        <a href="#copilot" class="btn-white">Start Free Analysis →</a>
+        <a href="#pricing" class="btn-outline-white">View Pricing</a>
+      </div>
+      <p style="margin-top:1.5rem; font-size:0.82rem; opacity:0.6;">No credit card required for basic analysis • Cancel anytime</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-layout">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo" style="color:#9FE1CB;">ClearTrade</a>
+      <p>Pakistan's AI-powered Trade Copilot. Making import & export as simple as booking an Uber.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <a href="#copilot">AI Copilot</a>
+      <a href="#documents">Documents</a>
+      <a href="#profit-checker">Profit Checker</a>
+      <a href="#route-finder">Route Finder</a>
+      <a href="#pricing">Pricing</a>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <a href="#">WEBOC Guide</a>
+      <a href="#">HS Code Search</a>
+      <a href="#">FTA List</a>
+      <a href="#">SRO Database</a>
+      <a href="#">Trade Blog</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+      <a href="#">Investor Deck</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Use</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 ClearTrade. All rights reserved. Built in 🇵🇰 Pakistan.</span>
+    <span>FBR • WEBOC • SBP compliant data</span>
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-icon">✅</span>
+  <span id="toastMsg">Done!</span>
+</div>
+
+<script>
+// ─── HERO DEMO ───────────────────────────────────────────────────────────────
+function runHeroDemo() {
+  const r = document.getElementById('heroResult');
+  const l = document.getElementById('heroLoading');
+  r.style.display = 'none';
+  l.style.display = 'block';
+  setTimeout(() => {
+    l.style.display = 'none';
+    r.style.display = 'block';
+  }, 1800);
+}
+
+// ─── CHAT COPILOT ─────────────────────────────────────────────────────────────
+let chatState = { step: 0, product: '', qty: '', country: '' };
+
+const responses = {
+  initial: (text) => {
+    const lower = text.toLowerCase();
+    let country = 'China', product = text, qty = '500';
+    const match = text.match(/(\d+)\s+(.+?)\s+from\s+(.+)/i);
+    if (match) { qty = match[1]; product = match[2]; country = match[3]; }
+    chatState = { step: 1, product, qty, country };
+    return {
+      text: `Got it! I found your trade query:<br><br>📦 <strong>${qty} ${product}</strong> from <strong>${country}</strong><br><br>What would you like me to do?`,
+      choices: ['🧭 Guide Me + Show Costs', '📄 Generate My Documents', '📊 Both']
+    };
+  },
+  guide: () => ({
+    text: `Great! Let me analyze your import. Running calculations...`,
+    loading: true,
+    next: () => showFullReport()
+  }),
+  docs: () => ({
+    text: `Perfect! I'll prepare all your documents. Opening document generator...`,
+    action: () => setTimeout(() => openDocModal('invoice'), 800)
+  })
+};
+
+function addMsg(sender, html, choices) {
+  const msgs = document.getElementById('chatMessages');
+  const d = document.createElement('div');
+  d.className = 'msg' + (sender === 'user' ? ' user' : '');
+  const av = sender === 'user' ? 'U' : 'CT';
+  let choiceHtml = '';
+  if (choices) {
+    choiceHtml = `<div class="msg-choice-row">${choices.map(c => `<button class="msg-choice-btn" onclick="handleChoice('${c.replace(/'/g,"\\'")}', this)">${c}</button>`).join('')}</div>`;
+  }
+  d.innerHTML = `<div class="msg-avatar">${av}</div><div class="msg-bubble">${html}${choiceHtml}</div>`;
+  msgs.appendChild(d);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function addTyping() {
+  const msgs = document.getElementById('chatMessages');
+  const d = document.createElement('div');
+  d.className = 'msg'; d.id = 'typingMsg';
+  d.innerHTML = `<div class="msg-avatar">CT</div><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
+  msgs.appendChild(d);
+  msgs.scrollTop = msgs.scrollHeight;
+  return d;
+}
+
+function removeTyping() {
+  const t = document.getElementById('typingMsg');
+  if (t) t.remove();
+}
+
+function sendChatMessage() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  addMsg('user', text);
+  input.value = '';
+  const typing = addTyping();
+  setTimeout(() => {
+    removeTyping();
+    if (chatState.step === 0) {
+      const r = responses.initial(text);
+      addMsg('bot', r.text, r.choices);
+    } else {
+      addMsg('bot', `I'm analyzing <em>${text}</em>. Please select an option above first to continue.`);
+    }
+  }, 1200);
+}
+
+function handleChoice(choice, btn) {
+  btn.classList.add('selected');
+  btn.parentElement.querySelectorAll('.msg-choice-btn').forEach(b => b.disabled = true);
+  addMsg('user', choice);
+  const typing = addTyping();
+
+  if (choice.includes('Guide') || choice.includes('Both')) {
+    setTimeout(() => {
+      removeTyping();
+      addMsg('bot', `Analyzing your import of <strong>${chatState.qty} ${chatState.product}</strong> from <strong>${chatState.country}</strong>...`);
+      setTimeout(() => showFullReport(), 600);
+    }, 1500);
+  } else if (choice.includes('Documents')) {
+    setTimeout(() => {
+      removeTyping();
+      addMsg('bot', `Opening document generator for your shipment. Fill in your details to generate all required customs documents.`);
+      setTimeout(() => openDocModal('invoice'), 800);
+    }, 1200);
+  }
+}
+
+function showFullReport() {
+  const panel = document.getElementById('resultsPanel');
+  panel.innerHTML = '';
+
+  const blocks = [
+    { id: 'hs', title: 'HS Code', html: `<div class="hs-code-display">8504.40.00</div><div class="hs-desc">Power Electronic Supply Units — LED Drivers & Charging Modules</div>` },
+    { id: 'taxes', title: 'Duties & Taxes', html: `
+      <div class="tax-row"><span>Customs Duty (20%)</span><span>PKR 33,360</span></div>
+      <div class="tax-row"><span>Sales Tax (17%)</span><span>PKR 28,356</span></div>
+      <div class="tax-row"><span>Additional Customs Duty (1%)</span><span>PKR 1,668</span></div>
+      <div class="tax-row"><span>Advance Income Tax (5.5%)</span><span>PKR 9,174</span></div>
+      <div class="tax-row total"><span>Total Tax Burden</span><span>PKR 72,558</span></div>` },
+    { id: 'certs', title: 'Required Certificates', html: `
+      <div><span class="cert-tag">⚡ PSQCA Certification</span><span class="cert-tag">🏥 Type Approval</span><span class="cert-tag">📋 Import Permit</span></div>
+      <div style="margin-top:0.65rem; font-size:0.82rem; color:var(--ink-muted);">PSQCA approval required for electronic goods. Estimated 7–15 days processing time.</div>` },
+    { id: 'cost', title: 'Total Landed Cost', html: `
+      <div class="tax-row"><span>Product value (500 units × $1.20 × 278)</span><span>PKR 1,66,800</span></div>
+      <div class="tax-row"><span>Shipping & freight</span><span>PKR 18,000</span></div>
+      <div class="tax-row"><span>All duties & taxes</span><span>PKR 72,558</span></div>
+      <div class="tax-row"><span>Clearing charges (est.)</span><span>PKR 5,000</span></div>
+      <div class="tax-row total"><span>Total Landed Cost</span><span>PKR 2,62,358</span></div>
+      <div style="font-size:0.8rem; color:var(--ink-faint); margin-top:6px;">PKR 524.72 per unit landed</div>` },
+    { id: 'profit', title: 'Profit Estimate', html: `
+      <div class="tax-row"><span>Estimated market price / unit</span><span>PKR 750</span></div>
+      <div class="tax-row"><span>Landed cost / unit</span><span>PKR 524</span></div>
+      <div class="tax-row"><span>Gross profit / unit</span><span style="color:var(--green); font-weight:700;">PKR 226</span></div>
+      <div class="tax-row"><span>Total gross profit (500 units)</span><span style="color:var(--green); font-weight:700;">PKR 1,13,000</span></div>
+      <div class="profit-bar-wrap" style="margin-top:0.75rem;">
+        <div class="profit-bar-label"><span>Margin</span><span style="font-weight:700; color:var(--green);">30.1%</span></div>
+        <div class="profit-bar"><div class="profit-bar-fill" style="width:30%"></div></div>
+      </div>
+      <div class="verdict-box go"><span class="verdict-badge">✅ GO</span><span>Viable trade — solid margin. Recommend proceeding.</span></div>` },
+  ];
+
+  blocks.forEach((b, i) => {
+    const div = document.createElement('div');
+    div.className = 'result-block';
+    div.innerHTML = `<div class="result-block-title">${b.title}</div>${b.html}`;
+    panel.appendChild(div);
+    setTimeout(() => div.classList.add('visible'), i * 350);
+  });
+
+  addMsg('bot', `✅ Analysis complete! I found your HS Code, calculated all taxes (PKR 72,558 total), and estimated <strong>PKR 1,13,000 profit</strong> on this shipment. Check the results panel on the right.`);
+}
+
+// ─── PROFIT CALCULATOR ───────────────────────────────────────────────────────
+function calcProfit() {
+  const cost = parseFloat(document.getElementById('pcProductCost').value) || 0;
+  const qty = parseInt(document.getElementById('pcQty').value) || 0;
+  const ship = parseFloat(document.getElementById('pcShipping').value) || 0;
+  const duty = parseFloat(document.getElementById('pcDuty').value) || 0;
+  const st = parseFloat(document.getElementById('pcSalesTax').value) || 0;
+  const sell = parseFloat(document.getElementById('pcSellPrice').value) || 0;
+  const fx = parseFloat(document.getElementById('pcFx').value) || 278;
+
+  const productPKR = cost * qty * fx;
+  const dutyAmt = productPKR * (duty / 100);
+  const stAmt = (productPKR + dutyAmt) * (st / 100);
+  const total = productPKR + ship + dutyAmt + stAmt;
+  const revenue = sell * qty;
+  const profit = revenue - total;
+  const margin = revenue > 0 ? (profit / revenue) * 100 : 0;
+
+  const fmt = n => 'PKR ' + Math.round(n).toLocaleString();
+
+  document.getElementById('prProductCost').textContent = fmt(productPKR);
+  document.getElementById('prShipping').textContent = fmt(ship);
+  document.getElementById('prDuty').textContent = fmt(dutyAmt);
+  document.getElementById('prSalesTax').textContent = fmt(stAmt);
+  document.getElementById('prLandedCost').textContent = fmt(total);
+  document.getElementById('prRevenue').textContent = fmt(revenue);
+
+  const np = document.getElementById('prNetProfit');
+  np.textContent = fmt(profit);
+  np.className = 'metric-value ' + (profit >= 0 ? 'positive' : 'negative');
+
+  const pct = Math.round(margin);
+  document.getElementById('prMarginPct').textContent = pct + '%';
+  document.getElementById('prMarginBar').style.width = Math.max(0, Math.min(100, pct)) + '%';
+  document.getElementById('prMarginBar').style.background = profit >= 0 ? 'var(--green-light)' : '#E24B4A';
+
+  const v = document.getElementById('prVerdict');
+  const vb = document.getElementById('prVerdictBadge');
+  const vt = document.getElementById('prVerdictText');
+  v.style.display = 'flex';
+  if (profit > 0 && margin >= 15) {
+    v.className = 'verdict-box go'; vb.textContent = '✅ GO';
+    vt.textContent = `Strong trade — ${pct}% margin. Recommended.`;
+  } else if (profit > 0) {
+    v.className = 'verdict-box go'; vb.textContent = '⚠️ MARGINAL';
+    vt.textContent = `Low margin (${pct}%). Negotiating better prices advised.`;
+  } else {
+    v.className = 'verdict-box nogo'; vb.textContent = '❌ NO-GO';
+    vt.textContent = `This trade loses money at current prices. Revisit your cost inputs.`;
+  }
+}
+
+// ─── ROUTE ANALYSIS ──────────────────────────────────────────────────────────
+function runRouteAnalysis() {
+  const btn = document.querySelector('#route-finder .btn-primary');
+  btn.textContent = 'Analyzing…';
+  setTimeout(() => {
+    btn.textContent = 'Compare Routes →';
+    showToast('Route analysis complete! China is the best option.');
+  }, 1800);
+}
+
+// ─── DOCUMENT MODAL ──────────────────────────────────────────────────────────
+let currentDocType = 'invoice';
+const docTitles = {
+  invoice: 'Commercial Invoice', packing: 'Packing List',
+  forme: 'Form-E (Export)', customs: 'Customs GD',
+  coo: 'Certificate of Origin', lc: 'LC Draft'
+};
+
+function openDocModal(type) {
+  currentDocType = type;
+  document.getElementById('modalTitle').textContent = 'Generate: ' + docTitles[type];
+  document.getElementById('docModal').classList.add('open');
+  document.getElementById('docFillTab').style.display = 'block';
+  document.getElementById('docFillTab').classList.add('active');
+  document.getElementById('docPreviewTab').classList.remove('active');
+  document.getElementById('docPreviewContent').classList.remove('show');
+  document.querySelectorAll('#docTabNav .tab-btn')[0].classList.add('active');
+  document.querySelectorAll('#docTabNav .tab-btn')[1].classList.remove('active');
+}
+
+function closeModal() { document.getElementById('docModal').classList.remove('open'); }
+
+function switchDocTab(tab, btn) {
+  document.querySelectorAll('#docTabNav .tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('docFillTab').classList.toggle('active', tab === 'fill');
+  document.getElementById('docPreviewTab').classList.toggle('active', tab === 'preview');
+}
+
+function generateDocPreview() {
+  const exp = document.getElementById('docExporter').value || 'ABC Trading Co., Lahore, Pakistan';
+  const imp = document.getElementById('docImporter').value || 'XYZ Suppliers, Shenzhen, China';
+  const prod = document.getElementById('docProduct').value || 'LED Bulbs 9W';
+  const hs = document.getElementById('docHsCode').value || '8539.50.00';
+  const qty = document.getElementById('docQty').value || '500';
+  const price = document.getElementById('docUnitPrice').value || '1.20';
+  const origin = document.getElementById('docOrigin').value;
+  const dest = document.getElementById('docDest').value;
+  const total = (parseFloat(qty) * parseFloat(price)).toFixed(2);
+  const date = new Date().toLocaleDateString('en-GB');
+
+  const fields = [
+    ['Invoice No.', 'CT-' + Math.floor(10000 + Math.random() * 90000)],
+    ['Date', date],
+    ['Exporter', exp],
+    ['Importer', imp],
+    ['Product', prod],
+    ['HS Code', hs],
+    ['Quantity', qty + ' units'],
+    ['Unit Price', 'USD ' + price],
+    ['Total Value', 'USD ' + total],
+    ['Country of Origin', origin],
+    ['Country of Destination', dest],
+    ['Payment Terms', 'T/T 30 days'],
+    ['Incoterms', 'FOB'],
+  ];
+
+  document.getElementById('docPreviewTitle').textContent = docTitles[currentDocType].toUpperCase();
+  const fieldsEl = document.getElementById('docPreviewFields');
+  fieldsEl.innerHTML = fields.map(([l, v]) => `<div class="doc-field"><span class="doc-field-label">${l}</span><span class="doc-field-value">${v}</span></div>`).join('');
+  document.getElementById('docPreviewContent').classList.add('show');
+
+  switchDocTab('preview', document.querySelectorAll('#docTabNav .tab-btn')[1]);
+  document.querySelectorAll('#docTabNav .tab-btn')[0].classList.remove('active');
+}
+
+function downloadDoc(type) {
+  showToast(`${type.toUpperCase()} document prepared for download!`);
+  closeModal();
+}
+
+// ─── TOAST ────────────────────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ─── SCROLL REVEAL ────────────────────────────────────────────────────────────
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+calcProfit();
+</script>
+</body>
+</html>
